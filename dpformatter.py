@@ -9,24 +9,35 @@ from openpyxl.workbook import Workbook
 from openpyxl.styles import Alignment
 from openpyxl.styles.borders import BORDER_THIN, BORDER_HAIR, BORDER_MEDIUM
 from openpyxl.utils import get_column_letter
+from xlsx_validator import is_xlsx_base64, is_worksheet_valid
 
 
-def dpformatter(input):
+def invalid_document_response():
+    return {"error": "invalid document"}, 400
+
+
+def dpformatter(file_base64):
 
     # Config
     ANLASS_ROW_HEIGHT = 350
     COLUMN_WIDTH = 10
     PAGE_MARGIN = 0.39  # 1 cm
 
+    if not is_xlsx_base64(file_base64):
+        return invalid_document_response()
+
     xlsx_base64 = re.sub(
         "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,",
         "",
-        input,
+        file_base64,
     )
     xlsxFile = BytesIO(base64.b64decode(xlsx_base64))
     wb = Workbook()
     wb = load_workbook(xlsxFile)
     ws = wb.worksheets[0]
+
+    if not is_worksheet_valid(ws):
+        return invalid_document_response()
 
     anlass_rows = []
     columns_to_fix_width_range = []  # Column range between Anlass and Kommentar
