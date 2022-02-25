@@ -1,15 +1,13 @@
-import os
 import base64
 from io import BytesIO
 import re
-import json
-import requests
 from openpyxl import load_workbook
 from openpyxl.workbook import Workbook
 from openpyxl.styles import Alignment
 from openpyxl.styles.borders import BORDER_THIN, BORDER_HAIR, BORDER_MEDIUM
 from openpyxl.utils import get_column_letter
 from xlsx_validator import is_xlsx_base64, is_worksheet_valid
+from getoutpdf import getoutpdf
 
 
 def invalid_document_response():
@@ -132,15 +130,7 @@ def dpformatter(file_base64):
     xlsx_output_base64 = base64.encodebytes(xlsx_output.getvalue()).decode("UTF-8")
 
     # Generate PDF via getoutpdf.com api
-
-    url = "https://getoutpdf.com/api/convert/document-to-pdf"
-    api_key = os.environ.get("GETOUTPDF_API_KEY")
-    request_data = {"api_key": api_key, "document": xlsx_output_base64}
-
-    res = requests.post(url, data=request_data)
-    res_json = json.loads(res.text)
-
-    pdf_base64 = res_json["pdf_base64"]
+    pdf_base64 = getoutpdf(xlsx_output_base64)
 
     return {
         "pdfBase64": "data:application/pdf;base64," + pdf_base64,
