@@ -1,3 +1,4 @@
+import os
 import base64
 from io import BytesIO
 import re
@@ -136,6 +137,10 @@ def dpformatter(file_base64):
     with open("temp.xlsx", "wb") as f:
         f.write(xlsx_output.getbuffer())
     pdf_base64 = cloudmersive("temp.xlsx")
+
+    # Delete temp.xlsx
+    if os.path.isfile("temp.xlsx"):
+        os.remove("temp.xlsx")
 
     # Generate PDF via getoutpdf.com api
     # pdf_base64 = getoutpdf(xlsx_output_base64)
