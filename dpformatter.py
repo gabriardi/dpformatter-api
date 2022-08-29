@@ -1,4 +1,3 @@
-import os
 import base64
 from io import BytesIO
 import re
@@ -8,10 +7,6 @@ from openpyxl.styles import Alignment
 from openpyxl.styles.borders import BORDER_THIN, BORDER_HAIR, BORDER_MEDIUM
 from openpyxl.utils import get_column_letter
 from xlsx_validator import is_xlsx_base64, is_worksheet_valid
-
-from cloudmersive import cloudmersive
-
-# from getoutpdf import getoutpdf
 
 
 def invalid_document_response():
@@ -133,20 +128,7 @@ def dpformatter(file_base64):
     wb.close()
     xlsx_output_base64 = base64.encodebytes(xlsx_output.getvalue()).decode("UTF-8")
 
-    # Generate PDF via cloudmersive api
-    with open("temp.xlsx", "wb") as f:
-        f.write(xlsx_output.getbuffer())
-    pdf_base64 = cloudmersive("temp.xlsx")
-
-    # Delete temp.xlsx
-    if os.path.isfile("temp.xlsx"):
-        os.remove("temp.xlsx")
-
-    # Generate PDF via getoutpdf.com api
-    # pdf_base64 = getoutpdf(xlsx_output_base64)
-
     return {
-        "pdfBase64": "data:application/pdf;base64," + pdf_base64,
         "xlsxBase64": "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,"
         + xlsx_output_base64,
     }
