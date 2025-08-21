@@ -15,7 +15,6 @@ def is_worksheet_valid(ws):
     is_valid = True
 
     identifiers = [
-        {"name": "Diensteinteilervorschlag", "number": 0},
         {"name": "TOZ", "number": 0},
         {"name": "Total bis Saisonende", "number": 0},
         {"name": "Kommentar", "number": 0},
