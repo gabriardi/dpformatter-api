@@ -1,6 +1,3 @@
-from re import S
-
-
 def is_xlsx_base64(xlsx_base64):
     if (
         "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,"

@@ -14,7 +14,6 @@ def invalid_document_response():
 
 
 def dpformatter(file_base64):
-
     # Config
     ANLASS_ROW_HEIGHT = 350
     COLUMN_WIDTH = 10
@@ -57,7 +56,7 @@ def dpformatter(file_base64):
             if "Kommentar" in str(cell.value):
                 columns_to_fix_width_range.append(cell.column - 1)
                 kommentar_text_cells.append(
-                    f"{get_column_letter(cell.column)}{cell.row+5}"
+                    f"{get_column_letter(cell.column)}{cell.row + 5}"
                 )
                 vertical_text_cells_ranges.append(
                     {"end": {"row": cell.row, "column": cell.column - 1}}
